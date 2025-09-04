@@ -1,11 +1,11 @@
 const CACHE_NAME = 'analizador-cache-v1';
 const urlsToCache = [
-    '/Analizador-Futbol/index.html',
-    '/Analizador-Futbol/style.css',
-    '/Analizador-Futbol/script.js',
-    '/Analizador-Futbol/icon-192x192.png',
-    '/Analizador-Futbol/icon-512x512.png',
-    '/Analizador-Futbol/manifest.json',
+    'index.html',
+    'style.css',
+    'script.js',
+    'icon-192x192.png',
+    'icon-512x512.png',
+    'manifest.json',
     'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
 ];
 
