@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de Partidos de Fútbol</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Análisis de Partidos UDE Canonja</h1>
+
+        <div class="half-selector">
+            <label for="half-select">Parte del Partido:</label>
+            <select id="half-select">
+                <option value="1">1ª Parte</option>
+                <option value="2">2ª Parte</option>
+            </select>
+        </div>
+
+        <div id="timer">00:00:00</div>
+        <div class="controls">
+            <button id="start-btn">Iniciar</button>
+            <button id="stop-btn">Detener</button>
+            <button id="reset-btn">Reiniciar</button>
+        </div>
+        
+        <div class="marker-section">
+            <button id="mark-btn">Marcar Acción ✍️</button>
+            <div id="marker-options" class="hidden">
+                <select id="phase-select">
+                    <option value="ofensiva">Fase Ofensiva</option>
+                    <option value="defensiva">Fase Defensiva</option>
+                    <option value="transicion_ofensiva">Transición Ofensiva</option>
+                    <option value="transicion_defensiva">Transición Defensiva</option>
+                    <option value="abp">ABP</option>
+                    <option value="acierto">Acierto</option>
+                    <option value="fallo">Fallo</option>
+                </select>
+                <textarea id="note-input" placeholder="Añade un comentario (opcional)..."></textarea>
+                <button id="add-marker-btn">Añadir Marcador</button>
+            </div>
+        </div>
+
+        <div class="markers-list">
+            <h2>Acciones Marcadas</h2>
+            <ul id="markers-ul"></ul>
+        </div>
+
+        <button id="export-pdf-btn">Exportar a PDF 📄</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html>
