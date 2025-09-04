@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analizador de Partidos de Fútbol</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="UDE Stats">
-    <link rel="apple-touch-icon" href="icon-512x512.png">
 </head>
 <body>
     <div class="container">
@@ -51,25 +46,8 @@
             <h2>Acciones Marcadas</h2>
             <ul id="markers-ul"></ul>
         </div>
-
-        <button id="export-pdf-btn">Exportar a PDF 📄</button>
     </div>
 
     <script src="script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado con éxito:', registration);
-                    })
-                    .catch(error => {
-                        console.error('Fallo en el registro del Service Worker:', error);
-                    });
-            });
-        }
-    </script>
 </body>
 </html>
