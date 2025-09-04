@@ -1,3 +1,8 @@
+// Variables de estado, globales para que sean accesibles desde todas las funciones
+let timerInterval;
+let startTime;
+let markers = []; // <-- Variable declarada de forma global
+
 // Obtención de elementos del DOM
 const timerDisplay = document.getElementById('timer');
 const startBtn = document.getElementById('start-btn');
@@ -11,12 +16,6 @@ const addMarkerBtn = document.getElementById('add-marker-btn');
 const markersList = document.getElementById('markers-ul');
 const exportPdfBtn = document.getElementById('export-pdf-btn');
 const halfSelect = document.getElementById('half-select');
-
-// Variables de estado
-let timerInterval;
-let startTime;
-let markers = [];
-const { jsPDF } = window.jspdf;
 
 // --- Funciones del temporizador ---
 
@@ -123,6 +122,7 @@ function displayMarker(marker) {
 }
 
 // --- Función para exportar a PDF ---
+const { jsPDF } = window.jspdf;
 
 exportPdfBtn.addEventListener('click', () => {
     if (markers.length === 0) {
