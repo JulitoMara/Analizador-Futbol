@@ -2,7 +2,7 @@
     "name": "Analizador UDE Canonja",
     "short_name": "UDE Stats",
     "description": "Herramienta de análisis de partidos para el UDE Canonja.",
-    "start_url": "/Analizador-Futbol/index.html",
+    "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#004d99",
