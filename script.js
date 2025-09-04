@@ -9,14 +9,12 @@ const phaseSelect = document.getElementById('phase-select');
 const noteInput = document.getElementById('note-input');
 const addMarkerBtn = document.getElementById('add-marker-btn');
 const markersList = document.getElementById('markers-ul');
-const exportPdfBtn = document.getElementById('export-pdf-btn');
 const halfSelect = document.getElementById('half-select');
 
 // Variables de estado
 let timerInterval;
 let startTime;
 let markers = [];
-const { jsPDF } = window.jspdf;
 
 // --- Funciones del temporizador ---
 
@@ -73,7 +71,6 @@ resetBtn.addEventListener('click', () => {
 
 // --- Funciones para los marcadores ---
 
-// Función para formatear el texto de la fase
 function formatPhase(phase) {
     if (phase === 'abp') {
         return 'ABP';
@@ -86,7 +83,6 @@ function formatPhase(phase) {
 }
 
 markBtn.addEventListener('click', () => {
-    // Mostrar opciones de marcador
     markerOptions.classList.toggle('hidden');
 });
 
@@ -107,7 +103,6 @@ addMarkerBtn.addEventListener('click', () => {
     markers.push(newMarker);
     displayMarker(newMarker);
 
-    // Limpiar campos después de añadir
     noteInput.value = '';
     markerOptions.classList.add('hidden');
 });
@@ -124,58 +119,3 @@ function displayMarker(marker) {
     `;
     markersList.appendChild(listItem);
 }
-
-// --- Función para exportar a PDF ---
-
-exportPdfBtn.addEventListener('click', () => {
-    if (markers.length === 0) {
-        alert("No hay acciones marcadas para exportar.");
-        return;
-    }
-
-    const doc = new jsPDF();
-    let yPos = 20;
-
-    doc.setFontSize(16);
-    doc.text(`Análisis de Partido UDE Canonja`, 15, yPos);
-    yPos += 10;
-    doc.setFontSize(12);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 15, yPos);
-    yPos += 15;
-
-    const markersByHalf = {
-        '1': [],
-        '2': []
-    };
-    markers.forEach(marker => {
-        markersByHalf[marker.half].push(marker);
-    });
-
-    for (const halfNum in markersByHalf) {
-        if (markersByHalf[halfNum].length > 0) {
-            if (yPos > 270) {
-                doc.addPage();
-                yPos = 20;
-            }
-            doc.setFontSize(14);
-            doc.text(`${halfNum}ª Parte`, 15, yPos);
-            yPos += 10;
-            doc.setFontSize(10);
-            
-            markersByHalf[halfNum].forEach((marker, index) => {
-                const text = `[${marker.time}] - ${marker.phase}. ${marker.note}`;
-                const splitText = doc.splitTextToSize(text, 180);
-                doc.text(splitText, 20, yPos);
-                yPos += (splitText.length * 5) + 5;
-                if (yPos > 280) {
-                    doc.addPage();
-                    yPos = 20;
-                    doc.setFontSize(10);
-                }
-            });
-            yPos += 10;
-        }
-    }
-
-    doc.save('Analisis_UDE_Canonja.pdf');
-});
