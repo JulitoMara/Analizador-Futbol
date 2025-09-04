@@ -122,6 +122,12 @@ function displayMarker(marker) {
 // --- Función para exportar a PDF ---
 
 exportPdfBtn.addEventListener('click', () => {
+    // Verificar si la librería jsPDF está disponible
+    if (typeof jsPDF === 'undefined') {
+        alert("Error: La librería de PDF no se ha cargado correctamente. Por favor, borra la caché del navegador y recarga la página.");
+        return;
+    }
+
     if (markers.length === 0) {
         alert("No hay acciones marcadas para exportar.");
         return;
