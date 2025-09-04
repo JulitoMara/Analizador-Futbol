@@ -126,16 +126,15 @@ h1 {
     padding: 10px;
     border-radius: 8px;
     display: flex;
-    flex-direction: column; /* Apilar los elementos */
-    align-items: flex-start; /* Alinear a la izquierda */
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-/* Contenedor para la primera línea (tiempo y parte) */
 .marker-line-1 {
     display: flex;
     align-items: center;
-    gap: 10px; /* Espacio entre los elementos */
-    margin-bottom: 5px; /* Separación de la siguiente línea */
+    gap: 10px;
+    margin-bottom: 5px;
 }
 
 .marker-time {
@@ -166,7 +165,6 @@ h1 {
     display: none;
 }
 
-/* Media Queries para responsividad */
 @media (max-width: 600px) {
     .container {
         padding: 20px 15px;
