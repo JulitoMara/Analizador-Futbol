@@ -1,83 +1,103 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f2f5;
-    margin: 0;
-    color: #333;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
 .container {
-    background: #fff;
+    background-color: #ffffff;
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    max-width: 500px;
     width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
+    text-align: center;
 }
 
 h1 {
     color: #004d99;
+    font-size: 24px;
     margin-bottom: 20px;
-    font-size: 1.8em;
 }
 
 .half-selector {
     margin-bottom: 20px;
-    font-size: 1.1em;
 }
 
-#half-select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    margin-left: 10px;
+.half-selector label, .half-selector select {
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 #timer {
-    font-size: 3.5em;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #2c3e50;
     font-family: 'Courier New', Courier, monospace;
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
 }
 
-.controls button, #mark-btn, #export-pdf-btn, #add-marker-btn {
-    background-color: #3498db;
-    color: white;
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #007bff;
+    color: #ffffff;
     border: none;
-    padding: 12px 25px;
-    margin: 5px;
-    font-size: 1em;
+    padding: 12px 24px;
     border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: auto;
-    min-width: 120px;
 }
 
-.controls button:hover, #mark-btn:hover, #export-pdf-btn:hover, #add-marker-btn:hover {
-    background-color: #2980b9;
+button:hover {
+    background-color: #0056b3;
 }
 
-#start-btn { background-color: #2ecc71; }
-#start-btn:hover { background-color: #27ae60; }
-#stop-btn { background-color: #e74c3c; }
-#stop-btn:hover { background-color: #c0392b; }
-#reset-btn { background-color: #f39c12; }
-#reset-btn:hover { background-color: #d35400; }
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#start-btn {
+    background-color: #28a745;
+}
+
+#start-btn:hover {
+    background-color: #218838;
+}
+
+#stop-btn {
+    background-color: #dc3545;
+}
+
+#stop-btn:hover {
+    background-color: #c82333;
+}
+
+#reset-btn {
+    background-color: #ffc107;
+    color: #333;
+}
+
+#reset-btn:hover {
+    background-color: #e0a800;
+}
 
 .marker-section {
-    margin-top: 25px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
+    margin-bottom: 20px;
 }
 
 #marker-options {
@@ -87,100 +107,81 @@ h1 {
     margin-top: 10px;
 }
 
+#marker-options.hidden {
+    display: none;
+}
+
 #phase-select, #note-input {
     width: calc(100% - 20px);
     padding: 10px;
-    border-radius: 5px;
     border: 1px solid #ccc;
-    font-size: 0.9em;
-    box-sizing: border-box;
-    margin: 0 auto;
-    display: block;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
-#note-input {
-    resize: vertical;
-    min-height: 60px;
+#export-pdf-btn {
+    margin-top: 20px;
+    background-color: #17a2b8;
+}
+
+#export-pdf-btn:hover {
+    background-color: #138496;
 }
 
 .markers-list {
     text-align: left;
-    margin-top: 30px;
+    margin-top: 20px;
+    border-top: 2px solid #eee;
+    padding-top: 20px;
 }
 
 .markers-list h2 {
-    color: #004d99;
-    border-bottom: 2px solid #004d99;
-    padding-bottom: 5px;
-    display: inline-block;
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 15px;
 }
 
 #markers-ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 #markers-ul li {
-    background: #ecf0f1;
-    margin: 8px 0;
-    padding: 10px;
+    background-color: #f9f9f9;
+    padding: 15px;
     border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    margin-bottom: 10px;
+    border-left: 5px solid #007bff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .marker-line-1 {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    justify-content: space-between;
     margin-bottom: 5px;
 }
 
 .marker-time {
     font-weight: bold;
-    font-size: 1.1em;
+    color: #004d99;
 }
 
 .marker-half {
-    font-size: 0.9em;
-    color: #555;
+    font-style: italic;
+    color: #666;
 }
 
 .marker-phase {
-    font-style: italic;
-    font-size: 1em;
-    font-weight: 500;
+    display: block;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
 }
 
 .marker-note {
-    width: 100%;
-    font-size: 0.85em;
-    color: #555;
+    font-style: italic;
+    color: #666;
+    display: block;
     margin-top: 5px;
-    text-align: left;
-}
-
-.hidden {
-    display: none;
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 20px 15px;
-    }
-    h1 {
-        font-size: 1.5em;
-    }
-    #timer {
-        font-size: 2.5em;
-    }
-    .controls button, #mark-btn, #export-pdf-btn, #add-marker-btn {
-        width: 100%;
-        margin: 5px 0;
-    }
-    #half-select {
-        width: calc(100% - 20px);
-        margin: 0 auto;
-    }
 }
