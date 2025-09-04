@@ -1,7 +1,7 @@
 // Variables de estado, globales para que sean accesibles desde todas las funciones
 let timerInterval;
 let startTime;
-let markers = []; // <-- Variable declarada de forma global
+let markers = [];
 
 // Obtención de elementos del DOM
 const timerDisplay = document.getElementById('timer');
@@ -36,7 +36,6 @@ startBtn.addEventListener('click', () => {
     if (!timerInterval) {
         startTime = Date.now();
         timerInterval = setInterval(updateTimer, 1000);
-        // Deshabilitar botones para evitar errores
         startBtn.disabled = true;
         stopBtn.disabled = false;
         resetBtn.disabled = false;
@@ -60,7 +59,6 @@ resetBtn.addEventListener('click', () => {
     timerDisplay.textContent = '00:00:00';
     markers = [];
     markersList.innerHTML = '';
-    // Habilitar/Deshabilitar botones
     startBtn.disabled = false;
     stopBtn.disabled = true;
     resetBtn.disabled = true;
@@ -122,7 +120,6 @@ function displayMarker(marker) {
 }
 
 // --- Función para exportar a PDF ---
-const { jsPDF } = window.jspdf;
 
 exportPdfBtn.addEventListener('click', () => {
     if (markers.length === 0) {
