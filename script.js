@@ -38,8 +38,7 @@ function loadFromLocal() {
         markers = obj.markers || [];
         halfSelect.value = obj.half || "1ª Parte";
         timerDisplay.textContent = formatTime(elapsedStart);
-        markersList.innerHTML = '';
-        markers.forEach(addMarkerToList);
+        renderMarkers();
         resetBtn.disabled = markers.length === 0 && elapsedStart === 0;
     }
 }
@@ -105,7 +104,7 @@ function resetTimerAndMarkers() {
     elapsedStart = 0;
     timerDisplay.textContent = '00:00:00';
     markers = [];
-    markersList.innerHTML = '';
+    renderMarkers();
     startBtn.disabled = false;
     stopBtn.disabled = true;
     resetBtn.disabled = true;
@@ -155,7 +154,7 @@ addNoteBtn.addEventListener('click', () => {
     if (pendingMarker) {
         pendingMarker.note = noteInput.value.trim();
         markers.push({ ...pendingMarker });
-        addMarkerToList(pendingMarker);
+        renderMarkers();
         pendingMarker = null;
         noteInputContainer.style.display = 'none';
         saveToLocal();
@@ -168,7 +167,7 @@ cancelNoteBtn.addEventListener('click', () => {
 });
 
 // --- Mostrar marcadores en la lista ---
-function addMarkerToList(marker) {
+function addMarkerToList(marker, idx) {
     const li = document.createElement('li');
     li.className = "marcador-accion";
     li.innerHTML = `
@@ -176,15 +175,30 @@ function addMarkerToList(marker) {
             <span class="parte">${marker.half}</span>
             <span class="accion">${marker.type}</span>
             <span class="tiempo">${formatTime(marker.time)}</span>
+            <button class="delete-marker-btn" title="Borrar marcador" data-idx="${idx}">🗑️</button>
         </div>
         ${marker.note ? `<div class="nota-comentario">📝 ${marker.note}</div>` : ''}
     `;
     markersList.appendChild(li);
 }
 
+function renderMarkers() {
+    markersList.innerHTML = '';
+    markers.forEach((marker, idx) => addMarkerToList(marker, idx));
+}
+
+// --- Borrar marcador ---
+markersList.addEventListener('click', function(e) {
+    if (e.target.classList.contains('delete-marker-btn')) {
+        const idx = parseInt(e.target.dataset.idx);
+        markers.splice(idx, 1);
+        saveToLocal();
+        renderMarkers();
+    }
+});
+
 // --- Exportar a PDF ---
 exportPdfBtn.addEventListener('click', () => {
-    // Construir un HTML limpio para el PDF
     let html = `
     <h2 style="font-family:Arial,sans-serif;font-size:1.3em;text-align:center;margin-bottom:8px;">Acciones Marcadas</h2>
     <table style="width:100%;border-collapse:collapse;font-size:1.04em;">
@@ -211,17 +225,25 @@ exportPdfBtn.addEventListener('click', () => {
     });
     html += '</tbody></table>';
 
-    // Usando html2pdf.js
-    if (window.html2pdf) {
-        html2pdf().from(html).set({
-            margin: 12,
-            filename: 'marcadores-partido.pdf',
-            html2canvas: { scale: 2, backgroundColor: "#fff" },
-            jsPDF: { orientation: 'portrait' }
-        }).save();
-    } else {
-        alert('La funcionalidad de PDF requiere incluir html2pdf.js');
-    }
+    // Exportar usando un div oculto para asegurar renderizado
+    const pdfArea = document.getElementById('pdf-export-area') || (() => {
+        const d = document.createElement('div');
+        d.id = 'pdf-export-area';
+        d.style.display = 'block';
+        document.body.appendChild(d);
+        return d;
+    })();
+    pdfArea.innerHTML = html;
+    pdfArea.style.display = 'block';
+
+    html2pdf().from(pdfArea).set({
+        margin: 12,
+        filename: 'marcadores-partido.pdf',
+        html2canvas: { scale: 2, backgroundColor: "#fff" },
+        jsPDF: { orientation: 'portrait' }
+    }).save().then(() => {
+        pdfArea.style.display = 'none';
+    });
 });
 
 // --- Inicialización de la interfaz ---
