@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(135deg, #e9eefc 0%, #f7fafc 100%);
+    background: #f4f6fa;
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -7,114 +7,129 @@ body {
 }
 .container {
     background: #fff;
-    max-width: 420px;
-    margin: 32px auto 0 auto;
-    padding: 30px 20px 20px 20px;
-    border-radius: 20px;
-    box-shadow: 0 8px 40px rgba(24,40,80,0.12);
+    max-width: 430px;
+    margin: 34px auto 0 auto;
+    padding: 30px 22px 25px 22px;
+    border-radius: 22px;
+    box-shadow: 0 6px 40px rgba(24,40,80,0.13);
 }
 .header {
-    text-align: center;
-    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 5px;
+    justify-content: center;
 }
 .header h1 {
-    font-size: 1.45em;
+    font-size: 1.44em;
     color: #0b2967;
-    margin: 0 0 6px 0;
+    margin: 0;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    line-height: 1.1;
+    text-align: center;
+    word-break: break-word;
 }
 .mitad-select {
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 #half-select {
     font-size: 1em;
-    margin-left: 8px;
-    border-radius: 8px;
-    padding: 6px 16px;
-    border: 1px solid #b6c3de;
-    background: #f2f7fd;
+    margin-left: 6px;
+    border-radius: 7px;
+    padding: 4px 12px;
+    border: 1.2px solid #b6c3de;
+    background: #f6fafd;
     color: #0b2967;
     font-weight: 500;
     transition: border 0.2s;
 }
 #half-select:focus {
-    border: 1.5px solid #4a95f7;
+    border: 1.5px solid #2e72e8;
     outline: none;
 }
 .timer {
     font-size: 2.8em;
-    background: linear-gradient(90deg, #e8f1f9, #f2f7fd 80%);
+    background: #e7f0fa;
     color: #0b2967;
     text-align: center;
-    letter-spacing: 0.09em;
-    padding: 22px 0;
-    margin: 12px 0 18px 0;
+    letter-spacing: 0.15em;
+    padding: 18px 0;
+    margin: 15px 0 13px 0;
     border-radius: 12px;
     font-family: 'Roboto Mono', 'Courier New', monospace;
-    box-shadow: 0 1px 8px #b6c3de33;
-    font-weight: bold;
+    font-weight: 500;
+    box-shadow: 0 1px 7px #b6c3de33;
 }
 .botones-cronometro {
     display: flex;
     justify-content: center;
-    gap: 18px;
-    margin-bottom: 18px;
+    gap: 15px;
+    margin-bottom: 16px;
 }
 .botones-cronometro button {
-    padding: 9px 25px;
+    padding: 9px 24px;
     border-radius: 7px;
     border: none;
-    font-size: 1.05em;
+    font-size: 1.06em;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    background: #f1f3f8;
+    background: #e3e5ec;
     color: #0b2967;
-    box-shadow: 0 1px 4px #cddafd20;
+    box-shadow: 0 1px 4px #cddafd15;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
-.botones-cronometro #start-btn:enabled { background: #e3e5ec; color: #0b2967; }
-.botones-cronometro #stop-btn:enabled { background: #fb4d3e; color: #fff; }
-.botones-cronometro #reset-btn:enabled { background: #ffd84c; color: #0b2967; }
+.botones-cronometro #start-btn:enabled { background: #bfc9d8; color: #0b2967; }
+.botones-cronometro #stop-btn:enabled { background: #ef4d3e; color: #fff; }
+.botones-cronometro #reset-btn:enabled { background: #ffc12c; color: #0b2967; }
 .botones-cronometro button:disabled {
-    opacity: 0.5;
+    opacity: 0.54;
     cursor: default;
-    background: #f1f3f8;
+    background: #e3e5ec;
     color: #aaa;
+    box-shadow: none;
 }
 .botones-marcadores {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 11px;
     justify-content: center;
     margin-bottom: 10px;
 }
 .marker-btn {
-    padding: 8px 0;
+    padding: 10px 0;
     border: none;
     border-radius: 8px;
-    font-size: 1.02em;
-    font-weight: 600;
-    width: 45%;
-    min-width: 140px;
-    margin: 2px 0;
+    font-size: 1.04em;
+    font-weight: 700;
+    width: 46%;
+    min-width: 120px;
+    margin-bottom: 2px;
     cursor: pointer;
-    opacity: 0.95;
-    transition: opacity 0.2s, transform 0.1s;
-    box-shadow: 0 1px 3px #b6c3de26;
+    opacity: 0.99;
+    box-shadow: 0 1px 3px #b6c3de1a;
+    transition: opacity 0.2s, transform 0.08s;
+    color: #fff;
 }
 .marker-btn:active {
     opacity: 0.85;
-    transform: scale(0.96);
+    transform: scale(0.97);
 }
 .marker-btn:disabled {
     opacity: 0.5;
     cursor: default;
 }
+.marker-btn.ofensiva { background: #2266dd; }
+.marker-btn.defensiva { background: #6644dd; }
+.marker-btn.trans-ofensiva { background: #ff8800; }
+.marker-btn.trans-defensiva { background: #16706f; }
+.marker-btn.abp { background: #aa1647; }
+.marker-btn.acierto { background: #1ebc47; }
+.marker-btn.fallo { background: #ef4d3e; }
+
 .nota-input-contenedor {
     display: none;
-    margin: 12px 0 6px 0;
+    margin: 13px 0 7px 0;
     text-align: center;
 }
 #note-input {
@@ -128,7 +143,7 @@ body {
     transition: border 0.2s;
 }
 #note-input:focus {
-    border: 1.5px solid #4a95f7;
+    border: 1.5px solid #2e72e8;
     outline: none;
 }
 #add-note-btn, #cancel-note-btn {
@@ -148,7 +163,7 @@ body {
 #cancel-note-btn:hover { background: #b52828; }
 
 hr {
-    margin: 23px 0 14px 0;
+    margin: 23px 0 16px 0;
     border: none;
     border-top: 1.5px solid #e0e6ee;
 }
@@ -156,7 +171,8 @@ hr {
 h2 {
     font-size: 1.18em;
     color: #0b2967;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    font-weight: 700;
 }
 
 .lista-marcadores {
@@ -165,13 +181,13 @@ h2 {
     margin-bottom: 20px;
 }
 .marcador-accion {
-    background: #f2f7fd;
+    background: #e7f0fa;
     border-radius: 10px;
     margin-bottom: 13px;
     padding: 10px 13px 7px 13px;
-    box-shadow: 0 1px 5px #c9e1ff20;
+    box-shadow: 0 1px 6px #c9e1ff23;
     font-size: 1.04em;
-    border-left: 5px solid #2e72e8;
+    border-left: 5px solid #2266dd;
 }
 .marcador-accion .fila-marcador {
     display: flex;
@@ -181,7 +197,7 @@ h2 {
     font-weight: 600;
     padding-bottom: 1px;
 }
-.marcador-accion .parte { flex: 1; text-align: left; color: #4a95f7;}
+.marcador-accion .parte { flex: 1; text-align: left; color: #2266dd;}
 .marcador-accion .accion { flex: 2; text-align: center; }
 .marcador-accion .tiempo { flex: 1; text-align: right; font-family: 'Roboto Mono', monospace;}
 .marcador-accion .nota-comentario {
@@ -196,23 +212,23 @@ h2 {
     padding: 14px 0;
     border-radius: 9px;
     border: none;
-    font-size: 1.12em;
+    font-size: 1.09em;
     font-weight: bold;
     background: linear-gradient(90deg, #2e72e8 50%, #0b2967 100%);
     color: #fff;
     cursor: pointer;
-    margin-top: 6px;
-    box-shadow: 0 1px 8px #b6c3de33;
+    margin-top: 7px;
+    box-shadow: 0 1px 10px #b6c3de22;
     letter-spacing: 1px;
     transition: background 0.2s;
 }
 .exportar-btn:hover {
-    background: linear-gradient(90deg, #1e4fbf 60%, #0b2967 100%);
+    background: linear-gradient(90deg, #1e4fbf 70%, #0b2967 100%);
 }
 @media (max-width: 600px) {
     .container {
         max-width: 99vw;
-        padding: 9px 2vw 22px 2vw;
+        padding: 10px 1vw 24px 1vw;
         border-radius: 0;
         box-shadow: none;
     }
@@ -220,5 +236,6 @@ h2 {
         flex-direction: column;
         gap: 7px;
     }
-    .marker-btn { min-width: 90px; width: 99%; }
+    .marker-btn { min-width: 80px; width: 99%; }
+    .header h1 { font-size: 1.15em; }
 }
