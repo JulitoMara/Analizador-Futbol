@@ -22,7 +22,6 @@ const addNoteBtn = document.getElementById('add-note-btn');
 const cancelNoteBtn = document.getElementById('cancel-note-btn');
 
 // --- Guardado y recuperación en LocalStorage ---
-
 function saveToLocal() {
     localStorage.setItem('timerData', JSON.stringify({
         elapsedStart,
@@ -37,7 +36,7 @@ function loadFromLocal() {
         const obj = JSON.parse(data);
         elapsedStart = obj.elapsedStart || 0;
         markers = obj.markers || [];
-        halfSelect.value = obj.half || "Primera";
+        halfSelect.value = obj.half || "1ª Parte";
         timerDisplay.textContent = formatTime(elapsedStart);
         markersList.innerHTML = '';
         markers.forEach(addMarkerToList);
@@ -46,7 +45,6 @@ function loadFromLocal() {
 }
 
 // --- Funciones del temporizador ---
-
 function formatTime(ms) {
     const totalSeconds = Math.floor(ms / 1000);
     const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
@@ -96,6 +94,11 @@ stopBtn.addEventListener('click', () => {
 });
 
 resetBtn.addEventListener('click', () => {
+    resetTimerAndMarkers();
+    saveToLocal();
+});
+
+function resetTimerAndMarkers() {
     clearInterval(timerInterval);
     timerInterval = null;
     startTime = null;
@@ -108,18 +111,17 @@ resetBtn.addEventListener('click', () => {
     resetBtn.disabled = true;
     quickMarkerBtns.forEach(btn => btn.disabled = true);
     halfSelect.disabled = false;
-    saveToLocal();
-});
+}
 
 // --- Manejo de mitades ---
-
 halfSelect.addEventListener('change', () => {
+    // Resetear cronómetro y marcadores al cambiar de parte
+    resetTimerAndMarkers();
     saveToLocal();
 });
 
 // --- Marcadores rápidos ---
-
-quickMarkerBtns.forEach(btn => {
+quickMarkerBtns.forEach((btn, i) => {
     btn.addEventListener('click', () => {
         if (timerInterval || elapsedStart > 0) {
             const markerType = btn.dataset.type || btn.textContent;
@@ -157,20 +159,26 @@ cancelNoteBtn.addEventListener('click', () => {
 });
 
 // --- Mostrar marcadores en la lista ---
-
 function addMarkerToList(marker) {
     const li = document.createElement('li');
-    li.innerHTML = `<strong>${marker.type}</strong> | ${formatTime(marker.time)} | ${marker.half} ${marker.note ? '<br>📝 ' + marker.note : ''}`;
+    li.className = "marcador-accion";
+    li.innerHTML = `
+        <div class="fila-marcador">
+            <span class="parte">${marker.half}</span>
+            <span class="accion">${marker.type}</span>
+            <span class="tiempo">${formatTime(marker.time)}</span>
+        </div>
+        ${marker.note ? `<div class="nota-comentario">📝 ${marker.note}</div>` : ''}
+    `;
     markersList.appendChild(li);
 }
 
 // --- Exportar a PDF ---
-
 exportPdfBtn.addEventListener('click', () => {
     let html = `<h2>Marcadores</h2>
     <ul>`;
     markers.forEach(marker => {
-        html += `<li><strong>${marker.type}</strong> | ${formatTime(marker.time)} | ${marker.half} ${marker.note ? '<br>📝 ' + marker.note : ''}</li>`;
+        html += `<li><div><strong>${marker.half}</strong> | <strong>${marker.type}</strong> | ${formatTime(marker.time)}</div>${marker.note ? '<div>📝 ' + marker.note + '</div>' : ''}</li>`;
     });
     html += '</ul>';
 
@@ -187,7 +195,6 @@ exportPdfBtn.addEventListener('click', () => {
 });
 
 // --- Inicialización de la interfaz ---
-
 function init() {
     timerDisplay.textContent = '00:00:00';
     startBtn.disabled = false;
@@ -201,9 +208,12 @@ init();
 
 // --- Acceso rápido con teclado ---
 document.addEventListener('keydown', (e) => {
+    // Si el foco está en el input de nota, ignorar accesos rápidos
+    if (document.activeElement === noteInput) return;
     if (timerInterval) {
         if (e.key === '1') quickMarkerBtns[0].click();
         if (e.key === '2') quickMarkerBtns[1].click();
         if (e.key === '3') quickMarkerBtns[2].click();
+        // Agrega más si tienes más botones de marcador rápido
     }
 });
