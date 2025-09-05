@@ -162,6 +162,24 @@ body {
 #cancel-note-btn { background: #e74444; }
 #cancel-note-btn:hover { background: #b52828; }
 
+.delete-marker-btn {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    font-size: 1.3em;
+    margin-left: 6px;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+    vertical-align: middle;
+}
+.delete-marker-btn:hover {
+    color: #ff4444;
+}
+@media (max-width: 600px) {
+    .delete-marker-btn { font-size: 1.2em; }
+}
+
 hr {
     margin: 23px 0 16px 0;
     border: none;
