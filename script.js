@@ -21,6 +21,30 @@ const noteInput = document.getElementById('note-input');
 const addNoteBtn = document.getElementById('add-note-btn');
 const cancelNoteBtn = document.getElementById('cancel-note-btn');
 
+// --- Guardado y recuperación en LocalStorage ---
+
+function saveToLocal() {
+    localStorage.setItem('timerData', JSON.stringify({
+        elapsedStart,
+        markers,
+        half: halfSelect.value
+    }));
+}
+
+function loadFromLocal() {
+    const data = localStorage.getItem('timerData');
+    if (data) {
+        const obj = JSON.parse(data);
+        elapsedStart = obj.elapsedStart || 0;
+        markers = obj.markers || [];
+        halfSelect.value = obj.half || "Primera";
+        timerDisplay.textContent = formatTime(elapsedStart);
+        markersList.innerHTML = '';
+        markers.forEach(addMarkerToList);
+        resetBtn.disabled = markers.length === 0 && elapsedStart === 0;
+    }
+}
+
 // --- Funciones del temporizador ---
 
 function formatTime(ms) {
@@ -67,6 +91,7 @@ stopBtn.addEventListener('click', () => {
         stopBtn.disabled = true;
         quickMarkerBtns.forEach(btn => btn.disabled = true);
         halfSelect.disabled = false;
+        saveToLocal();
     }
 });
 
@@ -83,13 +108,13 @@ resetBtn.addEventListener('click', () => {
     resetBtn.disabled = true;
     quickMarkerBtns.forEach(btn => btn.disabled = true);
     halfSelect.disabled = false;
+    saveToLocal();
 });
 
 // --- Manejo de mitades ---
 
 halfSelect.addEventListener('change', () => {
-    // Opcional: limpiar marcadores o resetear el timer si así lo deseas al cambiar de mitad
-    // resetBtn.click();
+    saveToLocal();
 });
 
 // --- Marcadores rápidos ---
@@ -98,7 +123,6 @@ quickMarkerBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         if (timerInterval || elapsedStart > 0) {
             const markerType = btn.dataset.type || btn.textContent;
-            // Abrir input de nota opcional
             showNoteInput(markerType);
         }
     });
@@ -123,6 +147,7 @@ addNoteBtn.addEventListener('click', () => {
         addMarkerToList(pendingMarker);
         pendingMarker = null;
         noteInputContainer.style.display = 'none';
+        saveToLocal();
     }
 });
 
@@ -142,7 +167,6 @@ function addMarkerToList(marker) {
 // --- Exportar a PDF ---
 
 exportPdfBtn.addEventListener('click', () => {
-    // Construir el contenido
     let html = `<h2>Marcadores</h2>
     <ul>`;
     markers.forEach(marker => {
@@ -150,7 +174,6 @@ exportPdfBtn.addEventListener('click', () => {
     });
     html += '</ul>';
 
-    // Usando html2pdf.js (debes incluir la librería en tu HTML)
     if (window.html2pdf) {
         html2pdf().from(html).set({
             margin: 1,
@@ -172,17 +195,15 @@ function init() {
     resetBtn.disabled = true;
     quickMarkerBtns.forEach(btn => btn.disabled = true);
     noteInputContainer.style.display = 'none';
+    loadFromLocal();
 }
 init();
 
 // --- Acceso rápido con teclado ---
-// Por ejemplo: presionar 1, 2, 3 para marcador rápido si quieres
 document.addEventListener('keydown', (e) => {
     if (timerInterval) {
-        // Ejemplo: 1=Gol, 2=Falta, 3=Córner
         if (e.key === '1') quickMarkerBtns[0].click();
         if (e.key === '2') quickMarkerBtns[1].click();
         if (e.key === '3') quickMarkerBtns[2].click();
-        // Puedes expandir según tus botones
     }
 });
