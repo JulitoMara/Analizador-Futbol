@@ -2,61 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analizador de Partidos UDE</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Análisis de Partidos UDE Canonja</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>
-            <span class="icon">⚽</span>
-            Análisis de Partidos UDE Canonja
-        </h1>
-
-        <div class="half-selector">
-            <label for="half-select">Parte del Partido:</label>
-            <select id="half-select">
-                <option value="1">1ª Parte</option>
-                <option value="2">2ª Parte</option>
-            </select>
-        </div>
-
-        <div id="timer">00:00:00</div>
-        <div class="controls">
-            <button id="start-btn" class="primary">Iniciar</button>
-            <button id="stop-btn" class="danger">Detener</button>
-            <button id="reset-btn" class="secondary">Reiniciar</button>
-        </div>
-
-        <div class="marker-section">
-            <div id="quick-markers" class="marker-grid">
-                <button class="marker-btn ofensiva" data-phase="ofensiva">Ofensiva</button>
-                <button class="marker-btn defensiva" data-phase="defensiva">Defensiva</button>
-                <button class="marker-btn trans-of" data-phase="transicion_ofensiva">Trans. Ofensiva</button>
-                <button class="marker-btn trans-def" data-phase="transicion_defensiva">Trans. Defensiva</button>
-                <button class="marker-btn abp" data-phase="abp">ABP</button>
-                <button class="marker-btn acierto" data-phase="acierto">Acierto</button>
-                <button class="marker-btn fallo" data-phase="fallo">Fallo</button>
-            </div>
-            
-            <div id="note-input-container" class="hidden">
-                <textarea id="note-input" placeholder="Añade un comentario (opcional)..."></textarea>
-                <div class="note-btns">
-                    <button id="add-note-btn" class="primary small">Guardar</button>
-                    <button id="cancel-note-btn" class="secondary small">Cancelar</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="markers-list">
-            <h2>Acciones Marcadas</h2>
-            <ul id="markers-ul"></ul>
-        </div>
-
-        <button id="export-pdf-btn" class="export-btn">Exportar a PDF 📄</button>
+<div class="container">
+    <div class="header">
+        <img src="https://cdn-icons-png.flaticon.com/512/861/861512.png" alt="balón" class="icono">
+        <h1>Análisis de Partidos UDE Canonja</h1>
     </div>
-
-    <script src="jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
+    <div class="mitad-select">
+        <label for="half-select">Parte del Partido:</label>
+        <select id="half-select">
+            <option>1ª Parte</option>
+            <option>2ª Parte</option>
+        </select>
+    </div>
+    <div id="timer" class="timer">00:00:00</div>
+    <div class="botones-cronometro">
+        <button id="start-btn">Iniciar</button>
+        <button id="stop-btn" disabled>Detener</button>
+        <button id="reset-btn" disabled>Reiniciar</button>
+    </div>
+    <div class="botones-marcadores">
+        <button class="marker-btn" style="background:#2266dd;color:#fff;">Ofensiva</button>
+        <button class="marker-btn" style="background:#6644dd;color:#fff;">Defensiva</button>
+        <button class="marker-btn" style="background:#ff8800;color:#fff;">Trans. Ofensiva</button>
+        <button class="marker-btn" style="background:#16706f;color:#fff;">Trans. Defensiva</button>
+        <button class="marker-btn" style="background:#aa1647;color:#fff;">ABP</button>
+        <button class="marker-btn" style="background:#1ebc47;color:#fff;">Acierto</button>
+        <button class="marker-btn" style="background:#ef4d3e;color:#fff;">Fallo</button>
+    </div>
+    <div id="note-input-container" class="nota-input-contenedor">
+        <input type="text" id="note-input" placeholder="Comentario o nota..." autocomplete="off"/>
+        <button id="add-note-btn">Añadir</button>
+        <button id="cancel-note-btn">Cancelar</button>
+    </div>
+    <hr>
+    <h2>Acciones Marcadas</h2>
+    <ul id="markers-ul" class="lista-marcadores"></ul>
+    <button id="export-pdf-btn" class="exportar-btn">Exportar a PDF 🗎</button>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
