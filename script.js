@@ -184,18 +184,39 @@ function addMarkerToList(marker) {
 
 // --- Exportar a PDF ---
 exportPdfBtn.addEventListener('click', () => {
-    let html = `<h2>Marcadores</h2>
-    <ul>`;
+    // Construir un HTML limpio para el PDF
+    let html = `
+    <h2 style="font-family:Arial,sans-serif;font-size:1.3em;text-align:center;margin-bottom:8px;">Acciones Marcadas</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:1.04em;">
+        <thead>
+            <tr>
+                <th style="border-bottom:1px solid #999;padding:6px 4px;">Parte</th>
+                <th style="border-bottom:1px solid #999;padding:6px 4px;">Acción</th>
+                <th style="border-bottom:1px solid #999;padding:6px 4px;">Tiempo</th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
     markers.forEach(marker => {
-        html += `<li><div><strong>${marker.half}</strong> | <strong>${marker.type}</strong> | ${formatTime(marker.time)}</div>${marker.note ? '<div>📝 ' + marker.note + '</div>' : ''}</li>`;
+        html += `<tr>
+            <td style="padding:6px 4px;border-bottom:1px solid #eee;text-align:left;">${marker.half}</td>
+            <td style="padding:6px 4px;border-bottom:1px solid #eee;text-align:center;">${marker.type}</td>
+            <td style="padding:6px 4px;border-bottom:1px solid #eee;text-align:right;">${formatTime(marker.time)}</td>
+        </tr>`;
+        if (marker.note) {
+            html += `<tr>
+                <td colspan="3" style="font-size:0.99em;color:#222;padding:4px 12px 10px 12px;font-style:italic;background:#f8f8f8;">📝 ${marker.note}</td>
+            </tr>`;
+        }
     });
-    html += '</ul>';
+    html += '</tbody></table>';
 
+    // Usando html2pdf.js
     if (window.html2pdf) {
         html2pdf().from(html).set({
-            margin: 1,
+            margin: 12,
             filename: 'marcadores-partido.pdf',
-            html2canvas: { scale: 2 },
+            html2canvas: { scale: 2, backgroundColor: "#fff" },
             jsPDF: { orientation: 'portrait' }
         }).save();
     } else {
