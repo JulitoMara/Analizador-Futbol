@@ -1,187 +1,31 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-}
-
-h1 {
-    color: #004d99;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.half-selector {
-    margin-bottom: 20px;
-}
-
-.half-selector label, .half-selector select {
-    font-size: 16px;
-    margin-right: 10px;
-}
-
-#timer {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 48px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-}
-
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-button {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-#start-btn {
-    background-color: #28a745;
-}
-
-#start-btn:hover {
-    background-color: #218838;
-}
-
-#stop-btn {
-    background-color: #dc3545;
-}
-
-#stop-btn:hover {
-    background-color: #c82333;
-}
-
-#reset-btn {
-    background-color: #ffc107;
-    color: #333;
-}
-
-#reset-btn:hover {
-    background-color: #e0a800;
-}
-
-.marker-section {
-    margin-bottom: 20px;
-}
-
-#marker-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-#marker-options.hidden {
-    display: none;
-}
-
-#phase-select, #note-input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-#export-pdf-btn {
-    margin-top: 20px;
-    background-color: #17a2b8;
-}
-
-#export-pdf-btn:hover {
-    background-color: #138496;
-}
-
-.markers-list {
-    text-align: left;
-    margin-top: 20px;
-    border-top: 2px solid #eee;
-    padding-top: 20px;
-}
-
-.markers-list h2 {
-    font-size: 20px;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-#markers-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#markers-ul li {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 5px solid #007bff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.marker-line-1 {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-
-.marker-time {
-    font-weight: bold;
-    color: #004d99;
-}
-
-.marker-half {
-    font-style: italic;
-    color: #666;
-}
-
-.marker-phase {
-    display: block;
-    font-weight: bold;
-    color: #333;
-    font-size: 14px;
-}
-
-.marker-note {
-    font-style: italic;
-    color: #666;
-    display: block;
-    margin-top: 5px;
+body { font-family: Arial, sans-serif; margin: 10px; background: #f4f4f4; color: #222; }
+.container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 8px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.09);}
+h1 { font-size: 1.2em; margin-bottom: 16px; }
+.timer-section, .controls, .edit-section { margin-bottom: 20px; }
+.timer { font-size: 2.2em; margin-bottom: 10px; letter-spacing: 2px; }
+.parte-selector { margin-bottom: 18px; }
+.parte-selector label { margin-right: 15px; font-weight: bold; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.controls button { padding: 10px 8px; border: none; border-radius: 5px; background: #007bff; color: white; font-size: 1em; cursor: pointer; flex: 1 0 45%; }
+.controls button.abp { background: #f39c12; }
+.controls button.off { background: #27ae60; }
+.controls button.def { background: #e74c3c; }
+.controls button.to { background: #2980b9; }
+.controls button.td { background: #8e44ad; }
+.controls button:active { filter: brightness(0.92);}
+.add-note { margin-top: 10px; }
+table { width: 100%; margin-top: 16px; border-collapse: collapse; font-size: 0.97em;}
+th, td { border: 1px solid #ddd; padding: 8px 6px; text-align: center;}
+th { background: #222; color: #fff; }
+tr:nth-child(even) { background: #f8f8f8; }
+.actions-btn { background: none; border: none; color: #007bff; cursor: pointer; font-size: 1em;}
+.actions-btn.delete { color: #e74c3c;}
+.actions-btn.edit { color: #27ae60;}
+.export-btn { margin-top: 20px; padding: 10px 26px; font-size: 1.1em; background: #222; color: #fff; border: none; border-radius: 5px; cursor: pointer;}
+.edit-section { display: none; background: #fef6e4; border-radius: 6px; padding: 15px; margin-top: 8px;}
+.edit-section input, .edit-section select { margin-bottom: 8px; width: 100%; padding: 7px; }
+@media (max-width: 480px) {
+  .container { padding: 5px; }
+  .controls button { font-size: 0.97em; padding: 9px 2px;}
+  th, td { font-size: .97em; padding: 5px; }
 }
