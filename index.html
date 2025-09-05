@@ -5,13 +5,14 @@
     <title>Análisis de Partidos UDE Canonja</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Fuente moderna -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 <div class="container">
     <div class="header">
+        <!-- Puedes añadir un logo pequeño aquí si lo deseas más adelante -->
         <h1>Análisis de Partidos UDE Canonja</h1>
     </div>
     <div class="mitad-select">
@@ -28,13 +29,13 @@
         <button id="reset-btn" disabled>Reiniciar</button>
     </div>
     <div class="botones-marcadores">
-        <button class="marker-btn" style="background:#2266dd;color:#fff;">Ofensiva</button>
-        <button class="marker-btn" style="background:#6644dd;color:#fff;">Defensiva</button>
-        <button class="marker-btn" style="background:#ff8800;color:#fff;">Trans. Ofensiva</button>
-        <button class="marker-btn" style="background:#16706f;color:#fff;">Trans. Defensiva</button>
-        <button class="marker-btn" style="background:#aa1647;color:#fff;">ABP</button>
-        <button class="marker-btn" style="background:#1ebc47;color:#fff;">Acierto</button>
-        <button class="marker-btn" style="background:#ef4d3e;color:#fff;">Fallo</button>
+        <button class="marker-btn ofensiva">Ofensiva</button>
+        <button class="marker-btn defensiva">Defensiva</button>
+        <button class="marker-btn trans-ofensiva">Trans. Ofensiva</button>
+        <button class="marker-btn trans-defensiva">Trans. Defensiva</button>
+        <button class="marker-btn abp">ABP</button>
+        <button class="marker-btn acierto">Acierto</button>
+        <button class="marker-btn fallo">Fallo</button>
     </div>
     <div id="note-input-container" class="nota-input-contenedor">
         <input type="text" id="note-input" placeholder="Comentario o nota..." autocomplete="off"/>
