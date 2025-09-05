@@ -24,21 +24,22 @@
             <button id="stop-btn">Detener</button>
             <button id="reset-btn">Reiniciar</button>
         </div>
-        
+
         <div class="marker-section">
-            <button id="mark-btn">Marcar Acción ✍️</button>
-            <div id="marker-options" class="hidden">
-                <select id="phase-select">
-                    <option value="ofensiva">Fase Ofensiva</option>
-                    <option value="defensiva">Fase Defensiva</option>
-                    <option value="transicion_ofensiva">Transición Ofensiva</option>
-                    <option value="transicion_defensiva">Transición Defensiva</option>
-                    <option value="abp">ABP</option>
-                    <option value="acierto">Acierto</option>
-                    <option value="fallo">Fallo</option>
-                </select>
+            <div id="quick-markers" class="marker-grid">
+                <button class="marker-btn" data-phase="ofensiva">Fase Ofensiva</button>
+                <button class="marker-btn" data-phase="defensiva">Fase Defensiva</button>
+                <button class="marker-btn" data-phase="transicion_ofensiva">Transición Ofensiva</button>
+                <button class="marker-btn" data-phase="transicion_defensiva">Transición Defensiva</button>
+                <button class="marker-btn" data-phase="abp">ABP</button>
+                <button class="marker-btn" data-phase="acierto">Acierto</button>
+                <button class="marker-btn" data-phase="fallo">Fallo</button>
+            </div>
+            
+            <div id="note-input-container" class="hidden">
                 <textarea id="note-input" placeholder="Añade un comentario (opcional)..."></textarea>
-                <button id="add-marker-btn">Añadir Marcador</button>
+                <button id="add-note-btn">Guardar</button>
+                <button id="cancel-note-btn">Cancelar</button>
             </div>
         </div>
 
