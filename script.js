@@ -1,207 +1,145 @@
-// Variables de estado
-let timerInterval;
-let startTime;
-let markers = [];
-let pendingMarker = null;
-
-// Obtención de elementos del DOM
+// ================== TIMER LOGIC ==================
+let timer = 0, interval = null;
+const startBtn = document.getElementById('startBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetBtn = document.getElementById('resetBtn');
 const timerDisplay = document.getElementById('timer');
-const startBtn = document.getElementById('start-btn');
-const stopBtn = document.getElementById('stop-btn');
-const resetBtn = document.getElementById('reset-btn');
-const markersList = document.getElementById('markers-ul');
-const exportPdfBtn = document.getElementById('export-pdf-btn');
-const halfSelect = document.getElementById('half-select');
 
-// Nuevos elementos para la interfaz mejorada
-const quickMarkerBtns = document.querySelectorAll('.marker-btn');
-const noteInputContainer = document.getElementById('note-input-container');
-const noteInput = document.getElementById('note-input');
-const addNoteBtn = document.getElementById('add-note-btn');
-const cancelNoteBtn = document.getElementById('cancel-note-btn');
+function formatTime(sec) {
+  let m = Math.floor(sec / 60);
+  let s = sec % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+function updateTimerDisplay() {
+  timerDisplay.textContent = formatTime(timer);
+}
+function startTimer() {
+  if (interval) return;
+  interval = setInterval(() => {
+    timer++;
+    updateTimerDisplay();
+  }, 1000);
+  startBtn.disabled = true;
+  pauseBtn.disabled = false;
+  resetBtn.disabled = false;
+}
+function pauseTimer() {
+  clearInterval(interval); interval = null;
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+}
+function resetTimer() {
+  timer = 0; updateTimerDisplay();
+  clearInterval(interval); interval = null;
+  startBtn.disabled = false;
+  pauseBtn.disabled = true;
+  resetBtn.disabled = true;
+}
+startBtn.onclick = startTimer;
+pauseBtn.onclick = pauseTimer;
+resetBtn.onclick = resetTimer;
+updateTimerDisplay();
 
-// --- Funciones del temporizador ---
+// ================== MARCADORES ==================
+let markers = [];
+let editingIndex = null;
 
-function formatTime(ms) {
-    const totalSeconds = Math.floor(ms / 1000);
-    const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
-    const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
-    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+function getParteSel() {
+  return document.querySelector('input[name="parte"]:checked').value;
 }
 
-function updateTimer() {
-    const elapsedTime = Date.now() - startTime;
-    timerDisplay.textContent = formatTime(elapsedTime);
+window.addMarker = function (fase) {
+  if (!interval && timer === 0) { alert("¡Primero inicia el temporizador!"); return; }
+  const nota = document.getElementById('noteInput').value.trim();
+  markers.push({
+    tiempo: formatTime(timer),
+    parte: getParteSel(),
+    fase: fase,
+    nota: nota
+  });
+  document.getElementById('noteInput').value = '';
+  renderMarkers();
 }
 
-startBtn.addEventListener('click', () => {
-    if (!timerInterval) {
-        startTime = Date.now();
-        timerInterval = setInterval(updateTimer, 1000);
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        resetBtn.disabled = false;
-        quickMarkerBtns.forEach(btn => btn.disabled = false);
-        halfSelect.disabled = true;
-    }
-});
-
-stopBtn.addEventListener('click', () => {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    quickMarkerBtns.forEach(btn => btn.disabled = true);
-    halfSelect.disabled = false;
-});
-
-resetBtn.addEventListener('click', () => {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    timerDisplay.textContent = '00:00:00';
-    markers = [];
-    markersList.innerHTML = '';
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    resetBtn.disabled = true;
-    quickMarkerBtns.forEach(btn => btn.disabled = true);
-    noteInputContainer.classList.add('hidden');
-    halfSelect.disabled = false;
-    halfSelect.value = '1';
-});
-
-// --- Funciones para los marcadores (Mejoradas) ---
-
-function formatPhase(phase) {
-    if (phase === 'abp') {
-        return 'ABP';
-    }
-    return phase
-        .replace(/_/g, ' ')
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-}
-
-// Lógica para guardar el marcador con o sin nota
-addNoteBtn.addEventListener('click', () => {
-    pendingMarker.note = noteInput.value.trim();
-    markers.push(pendingMarker);
-    displayMarker(pendingMarker);
-    
-    pendingMarker = null;
-    noteInput.value = '';
-    noteInputContainer.classList.add('hidden');
-});
-
-// Lógica para cancelar la nota y guardar solo el marcador
-cancelNoteBtn.addEventListener('click', () => {
-    markers.push(pendingMarker);
-    displayMarker(pendingMarker);
-    
-    pendingMarker = null;
-    noteInput.value = '';
-    noteInputContainer.classList.add('hidden');
-});
-
-// Escuchar los clics en los nuevos botones de marcadores rápidos
-quickMarkerBtns.forEach(button => {
-    button.addEventListener('click', (e) => {
-        if (!timerInterval) {
-            alert("Por favor, inicia el temporizador primero.");
-            return;
-        }
-
-        const phaseRaw = e.target.getAttribute('data-phase');
-        const elapsedTime = Date.now() - startTime;
-        const timeFormatted = formatTime(elapsedTime);
-        const half = halfSelect.value;
-        const phaseDisplay = formatPhase(phaseRaw);
-
-        pendingMarker = {
-            time: timeFormatted,
-            phase: phaseDisplay,
-            note: '',
-            half: half
-        };
-        
-        // Muestra la caja para añadir la nota
-        noteInputContainer.classList.remove('hidden');
-        noteInput.focus();
-    });
-});
-
-function displayMarker(marker) {
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `
-        <div class="marker-line-1">
-            <span class="marker-time">${marker.time}</span>
-            <span class="marker-half">${marker.half}ª Parte</span>
-        </div>
-        <span class="marker-phase">${marker.phase}</span>
-        ${marker.note ? `<span class="marker-note">${marker.note}</span>` : ''}
+function renderMarkers() {
+  let tbody = document.getElementById('markersTable').querySelector('tbody');
+  tbody.innerHTML = '';
+  markers.forEach((m, idx) => {
+    let tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${idx + 1}</td>
+      <td>${m.tiempo}</td>
+      <td>${m.parte}</td>
+      <td>${m.fase}</td>
+      <td>${m.nota || ''}</td>
+      <td>
+        <button class="actions-btn edit" onclick="editMarker(${idx})">✏️</button>
+        <button class="actions-btn delete" onclick="deleteMarker(${idx})">🗑️</button>
+      </td>
     `;
-    markersList.appendChild(listItem);
+    tbody.appendChild(tr);
+  });
 }
 
-// --- Función para exportar a PDF ---
+window.editMarker = function (idx) {
+  editingIndex = idx;
+  const m = markers[idx];
+  document.getElementById('editTime').value = m.tiempo;
+  document.getElementById('editParte').value = m.parte;
+  document.getElementById('editFase').value = m.fase;
+  document.getElementById('editNota').value = m.nota;
+  document.getElementById('editSection').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-exportPdfBtn.addEventListener('click', () => {
-    // Verificar si la librería jsPDF está disponible
-    if (typeof jsPDF === 'undefined') {
-        alert("Error: La librería de PDF no se ha cargado correctamente. Por favor, borra la caché del navegador y recarga la página.");
-        return;
-    }
+window.cancelEdit = function () {
+  document.getElementById('editSection').style.display = 'none';
+  editingIndex = null;
+}
 
-    if (markers.length === 0) {
-        alert("No hay acciones marcadas para exportar.");
-        return;
-    }
+window.saveEdit = function () {
+  if (editingIndex === null) return;
+  markers[editingIndex] = {
+    tiempo: document.getElementById('editTime').value,
+    parte: document.getElementById('editParte').value,
+    fase: document.getElementById('editFase').value,
+    nota: document.getElementById('editNota').value
+  };
+  renderMarkers();
+  cancelEdit();
+}
 
-    const doc = new jsPDF();
-    let yPos = 20;
+window.deleteMarker = function (idx) {
+  if (confirm('¿Eliminar este marcador?')) {
+    markers.splice(idx, 1);
+    renderMarkers();
+  }
+}
 
-    doc.setFontSize(16);
-    doc.text(`Análisis de Partido UDE Canonja`, 15, yPos);
-    yPos += 10;
-    doc.setFontSize(12);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 15, yPos);
-    yPos += 15;
+// ================== EXPORTAR A PDF ==================
+window.exportToPDF = function () {
+  if (markers.length === 0) { alert("No hay marcadores para exportar."); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
-    const markersByHalf = {
-        '1': [],
-        '2': []
-    };
-    markers.forEach(marker => {
-        markersByHalf[marker.half].push(marker);
-    });
+  doc.setFontSize(16);
+  doc.text('Marcadores de Partido', 14, 16);
 
-    for (const halfNum in markersByHalf) {
-        if (markersByHalf[halfNum].length > 0) {
-            if (yPos > 270) {
-                doc.addPage();
-                yPos = 20;
-            }
-            doc.setFontSize(14);
-            doc.text(`${halfNum}ª Parte`, 15, yPos);
-            yPos += 10;
-            doc.setFontSize(10);
-            
-            markersByHalf[halfNum].forEach((marker, index) => {
-                const text = `[${marker.time}] - ${marker.phase}. ${marker.note}`;
-                const splitText = doc.splitTextToSize(text, 180);
-                doc.text(splitText, 20, yPos);
-                yPos += (splitText.length * 5) + 5;
-                if (yPos > 280) {
-                    doc.addPage();
-                    yPos = 20;
-                    doc.setFontSize(10);
-                }
-            });
-            yPos += 10;
-        }
-    }
+  const head = [['#', 'Tiempo', 'Parte', 'Fase/Jugada', 'Nota']];
+  const body = markers.map((m, i) => [
+    i + 1, m.tiempo, m.parte, m.fase, m.nota || ''
+  ]);
 
-    doc.save('Analisis_UDE_Canonja.pdf');
-});
+  doc.autoTable({
+    head: head,
+    body: body,
+    startY: 24,
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [30, 30, 30] },
+  });
+
+  doc.save('marcadores_partido.pdf');
+}
+
+// Inicializa tabla vacía al cargar la página
+renderMarkers();
