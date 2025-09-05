@@ -1,21 +1,24 @@
-// Variables de estado, globales para que sean accesibles desde todas las funciones
+// Variables de estado
 let timerInterval;
 let startTime;
 let markers = [];
+let pendingMarker = null;
 
 // Obtención de elementos del DOM
 const timerDisplay = document.getElementById('timer');
 const startBtn = document.getElementById('start-btn');
 const stopBtn = document.getElementById('stop-btn');
 const resetBtn = document.getElementById('reset-btn');
-const markBtn = document.getElementById('mark-btn');
-const markerOptions = document.getElementById('marker-options');
-const phaseSelect = document.getElementById('phase-select');
-const noteInput = document.getElementById('note-input');
-const addMarkerBtn = document.getElementById('add-marker-btn');
 const markersList = document.getElementById('markers-ul');
 const exportPdfBtn = document.getElementById('export-pdf-btn');
 const halfSelect = document.getElementById('half-select');
+
+// Nuevos elementos para la interfaz mejorada
+const quickMarkerBtns = document.querySelectorAll('.marker-btn');
+const noteInputContainer = document.getElementById('note-input-container');
+const noteInput = document.getElementById('note-input');
+const addNoteBtn = document.getElementById('add-note-btn');
+const cancelNoteBtn = document.getElementById('cancel-note-btn');
 
 // --- Funciones del temporizador ---
 
@@ -39,7 +42,7 @@ startBtn.addEventListener('click', () => {
         startBtn.disabled = true;
         stopBtn.disabled = false;
         resetBtn.disabled = false;
-        markBtn.disabled = false;
+        quickMarkerBtns.forEach(btn => btn.disabled = false);
         halfSelect.disabled = true;
     }
 });
@@ -49,7 +52,7 @@ stopBtn.addEventListener('click', () => {
     timerInterval = null;
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    markBtn.disabled = true;
+    quickMarkerBtns.forEach(btn => btn.disabled = true);
     halfSelect.disabled = false;
 });
 
@@ -62,13 +65,13 @@ resetBtn.addEventListener('click', () => {
     startBtn.disabled = false;
     stopBtn.disabled = true;
     resetBtn.disabled = true;
-    markBtn.disabled = true;
-    markerOptions.classList.add('hidden');
+    quickMarkerBtns.forEach(btn => btn.disabled = true);
+    noteInputContainer.classList.add('hidden');
     halfSelect.disabled = false;
     halfSelect.value = '1';
 });
 
-// --- Funciones para los marcadores ---
+// --- Funciones para los marcadores (Mejoradas) ---
 
 function formatPhase(phase) {
     if (phase === 'abp') {
@@ -81,29 +84,52 @@ function formatPhase(phase) {
         .join(' ');
 }
 
-markBtn.addEventListener('click', () => {
-    markerOptions.classList.toggle('hidden');
+// Lógica para guardar el marcador con o sin nota
+addNoteBtn.addEventListener('click', () => {
+    pendingMarker.note = noteInput.value.trim();
+    markers.push(pendingMarker);
+    displayMarker(pendingMarker);
+    
+    pendingMarker = null;
+    noteInput.value = '';
+    noteInputContainer.classList.add('hidden');
 });
 
-addMarkerBtn.addEventListener('click', () => {
-    const elapsedTime = Date.now() - startTime;
-    const timeFormatted = formatTime(elapsedTime);
-    const phaseRaw = phaseSelect.value;
-    const phaseDisplay = formatPhase(phaseRaw);
-    const note = noteInput.value.trim();
-    const half = halfSelect.value;
-
-    const newMarker = {
-        time: timeFormatted,
-        phase: phaseDisplay,
-        note: note,
-        half: half
-    };
-    markers.push(newMarker);
-    displayMarker(newMarker);
-
+// Lógica para cancelar la nota y guardar solo el marcador
+cancelNoteBtn.addEventListener('click', () => {
+    markers.push(pendingMarker);
+    displayMarker(pendingMarker);
+    
+    pendingMarker = null;
     noteInput.value = '';
-    markerOptions.classList.add('hidden');
+    noteInputContainer.classList.add('hidden');
+});
+
+// Escuchar los clics en los nuevos botones de marcadores rápidos
+quickMarkerBtns.forEach(button => {
+    button.addEventListener('click', (e) => {
+        if (!timerInterval) {
+            alert("Por favor, inicia el temporizador primero.");
+            return;
+        }
+
+        const phaseRaw = e.target.getAttribute('data-phase');
+        const elapsedTime = Date.now() - startTime;
+        const timeFormatted = formatTime(elapsedTime);
+        const half = halfSelect.value;
+        const phaseDisplay = formatPhase(phaseRaw);
+
+        pendingMarker = {
+            time: timeFormatted,
+            phase: phaseDisplay,
+            note: '',
+            half: half
+        };
+        
+        // Muestra la caja para añadir la nota
+        noteInputContainer.classList.remove('hidden');
+        noteInput.focus();
+    });
 });
 
 function displayMarker(marker) {
