@@ -1,78 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Marcador de Fútbol para Edición de Vídeo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="styles.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de Partidos UDE</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Marcador de Fútbol para Edición de Vídeo</h1>
-    <div class="timer-section">
-      <div class="timer" id="timer">00:00</div>
-      <button id="startBtn">Iniciar</button>
-      <button id="pauseBtn" disabled>Pausar</button>
-      <button id="resetBtn" disabled>Reiniciar</button>
+    <div class="container">
+        <h1>
+            <span class="icon">⚽</span>
+            Análisis de Partidos UDE Canonja
+        </h1>
+
+        <div class="half-selector">
+            <label for="half-select">Parte del Partido:</label>
+            <select id="half-select">
+                <option value="1">1ª Parte</option>
+                <option value="2">2ª Parte</option>
+            </select>
+        </div>
+
+        <div id="timer">00:00:00</div>
+        <div class="controls">
+            <button id="start-btn" class="primary">Iniciar</button>
+            <button id="stop-btn" class="danger">Detener</button>
+            <button id="reset-btn" class="secondary">Reiniciar</button>
+        </div>
+
+        <div class="marker-section">
+            <div id="quick-markers" class="marker-grid">
+                <button class="marker-btn ofensiva" data-phase="ofensiva">Ofensiva</button>
+                <button class="marker-btn defensiva" data-phase="defensiva">Defensiva</button>
+                <button class="marker-btn trans-of" data-phase="transicion_ofensiva">Trans. Ofensiva</button>
+                <button class="marker-btn trans-def" data-phase="transicion_defensiva">Trans. Defensiva</button>
+                <button class="marker-btn abp" data-phase="abp">ABP</button>
+                <button class="marker-btn acierto" data-phase="acierto">Acierto</button>
+                <button class="marker-btn fallo" data-phase="fallo">Fallo</button>
+            </div>
+            
+            <div id="note-input-container" class="hidden">
+                <textarea id="note-input" placeholder="Añade un comentario (opcional)..."></textarea>
+                <div class="note-btns">
+                    <button id="add-note-btn" class="primary small">Guardar</button>
+                    <button id="cancel-note-btn" class="secondary small">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="markers-list">
+            <h2>Acciones Marcadas</h2>
+            <ul id="markers-ul"></ul>
+        </div>
+
+        <button id="export-pdf-btn" class="export-btn">Exportar a PDF 📄</button>
     </div>
-    <div class="parte-selector">
-      <label><input type="radio" name="parte" value="1ª" checked> 1ª Parte</label>
-      <label><input type="radio" name="parte" value="2ª"> 2ª Parte</label>
-    </div>
-    <div class="controls">
-      <button class="off" onclick="addMarker('Organización Ofensiva')">Off</button>
-      <button class="def" onclick="addMarker('Organización Defensiva')">Def</button>
-      <button class="to" onclick="addMarker('Transición Ofensiva')">TO</button>
-      <button class="td" onclick="addMarker('Transición Defensiva')">TD</button>
-      <button class="abp" onclick="addMarker('ABP')">ABP</button>
-    </div>
-    <div class="add-note">
-      <input type="text" id="noteInput" placeholder="Nota/comentario opcional..." style="width:100%;padding:7px;">
-    </div>
-    <table id="markersTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Tiempo</th>
-          <th>Parte</th>
-          <th>Fase/Jugada</th>
-          <th>Nota</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Marcadores aquí -->
-      </tbody>
-    </table>
-    <button class="export-btn" onclick="exportToPDF()">Exportar a PDF</button>
-    <div class="edit-section" id="editSection">
-      <h3>Editar marcador</h3>
-      <label>Tiempo: <input type="text" id="editTime" readonly></label>
-      <label>Parte: 
-        <select id="editParte">
-          <option value="1ª">1ª Parte</option>
-          <option value="2ª">2ª Parte</option>
-        </select>
-      </label>
-      <label>Fase/Jugada:
-        <select id="editFase">
-          <option value="Organización Ofensiva">Organización Ofensiva</option>
-          <option value="Organización Defensiva">Organización Defensiva</option>
-          <option value="Transición Ofensiva">Transición Ofensiva</option>
-          <option value="Transición Defensiva">Transición Defensiva</option>
-          <option value="ABP">ABP</option>
-        </select>
-      </label>
-      <label>Nota:
-        <input type="text" id="editNota">
-      </label>
-      <button onclick="saveEdit()">Guardar</button>
-      <button onclick="cancelEdit()">Cancelar</button>
-    </div>
-  </div>
-  <!-- Librerías necesarias para exportar a PDF -->
-  <script src="jspdf.umd.min.js"></script>
-  <script src="jspdf.plugin.autotable.min.js"></script>
-  <script src="script.js"></script>
+
+    <script src="jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
