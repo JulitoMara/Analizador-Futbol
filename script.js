@@ -115,8 +115,17 @@ function resetTimerAndMarkers() {
 
 // --- Manejo de mitades ---
 halfSelect.addEventListener('change', () => {
-    // Resetear cronómetro y marcadores al cambiar de parte
-    resetTimerAndMarkers();
+    // Solo resetear el cronómetro, NO los marcadores
+    clearInterval(timerInterval);
+    timerInterval = null;
+    startTime = null;
+    elapsedStart = 0;
+    timerDisplay.textContent = '00:00:00';
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    resetBtn.disabled = true;
+    quickMarkerBtns.forEach(btn => btn.disabled = true);
+    halfSelect.disabled = false;
     saveToLocal();
 });
 
